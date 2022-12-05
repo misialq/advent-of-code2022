@@ -1,7 +1,7 @@
-use crate::day2::solve;
+use crate::day3::solve;
 use std::env;
 
-pub mod day2;
+pub mod day3;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
