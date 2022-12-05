@@ -48,6 +48,21 @@ fn is_draw(a: &char, b: &char) -> bool {
     }
 }
 
+fn pick_strategy<'a>(players_move: &'a char, desired_outcome: &'a char) -> &'a char {
+    let strategies: HashMap<(&char, &char), &char> = HashMap::from([
+        ((&'A', &'X'), &'Z'),
+        ((&'A', &'Y'), &'X'),
+        ((&'A', &'Z'), &'Y'),
+        ((&'B', &'X'), &'X'),
+        ((&'B', &'Y'), &'Y'),
+        ((&'B', &'Z'), &'Z'),
+        ((&'C', &'X'), &'Y'),
+        ((&'C', &'Y'), &'Z'),
+        ((&'C', &'Z'), &'X'),
+    ]);
+    strategies.get(&(players_move, desired_outcome)).unwrap()
+}
+
 fn process_list(p1: Vec<char>, p2: Vec<char>) -> i32 {
     let points: HashMap<char, i32> =
         HashMap::from([('A', 1), ('B', 2), ('C', 3), ('X', 1), ('Y', 2), ('Z', 3)]);
@@ -55,12 +70,13 @@ fn process_list(p1: Vec<char>, p2: Vec<char>) -> i32 {
     let mut p2_points = 0;
 
     for (i, (m1, m2)) in p1.iter().zip(p2.iter()).enumerate() {
+        let strategy = pick_strategy(m1, m2);
         p1_points += points.get(m1).unwrap();
-        p2_points += points.get(m2).unwrap();
+        p2_points += points.get(strategy).unwrap();
 
-        if is_winner(m1, m2) {
+        if is_winner(m1, strategy) {
             p1_points += 6
-        } else if is_draw(m1, m2) {
+        } else if is_draw(m1, strategy) {
             p1_points += 3;
             p2_points += 3;
         } else {
