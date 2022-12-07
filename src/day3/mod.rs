@@ -2,7 +2,7 @@ use array_tool::vec::Intersect;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use std::iter::{Iterator};
+use std::iter::Iterator;
 
 pub fn solve(fp: &str) -> i32 {
     let result = read_file(fp);
@@ -38,11 +38,16 @@ fn process_list(backpacks: Vec<String>) -> i32 {
     }
 
     let mut common_items: Vec<char> = vec![];
-    for bp in backpacks.iter() {
-        let bp_size = bp.len();
-        let c1 = &bp[..bp_size / 2].chars().collect::<Vec<char>>();
-        let c2 = &bp[bp_size / 2..].chars().collect::<Vec<char>>();
-        let common_item = c1.intersect(c2.to_vec());
+    let bp_groups = backpacks
+        .chunks(3)
+        .map(|s| s.into())
+        .collect::<Vec<Vec<String>>>();
+    for bp_group in bp_groups.iter() {
+        let bps = bp_group
+            .iter()
+            .map(|g| g.chars().collect::<Vec<char>>())
+            .collect::<Vec<Vec<char>>>();
+        let common_item = bps[0].intersect(bps[1].to_vec()).intersect(bps[2].to_vec());
         common_items.push(common_item[0])
     }
 
