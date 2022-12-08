@@ -34,6 +34,17 @@ fn is_subset(range1: &Vec<i32>, range2: &Vec<i32>) -> bool {
     range2.iter().all(|item| range1.contains(item))
 }
 
+fn is_overlap(range1: &Vec<i32>, range2: &Vec<i32>) -> bool {
+    if ((range1[range1.len() - 1] >= range2[0])
+        & (range1[range1.len() - 1] <= range2[range2.len() - 1]))
+        | ((range1[0] >= range2[0]) & (range1[0] <= range2[range2.len() - 1]))
+    {
+        true
+    } else {
+        false
+    }
+}
+
 fn process_list(items: Vec<String>) -> i32 {
     let mut ranges1 = vec![];
     let mut ranges2 = vec![];
@@ -49,7 +60,7 @@ fn process_list(items: Vec<String>) -> i32 {
 
     let mut counter = 0;
     for (r1, r2) in ranges1.iter().zip(ranges2.iter()) {
-        if is_subset(r1, r2) || is_subset(r2, r1) {
+        if is_overlap(r1, r2) || is_overlap(r2, r1) {
             counter += 1
         }
     }
