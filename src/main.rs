@@ -1,9 +1,9 @@
 extern crate core;
 
-use crate::day6::solve;
+use crate::day8::solve;
 use std::env;
 
-pub mod day6;
+pub mod day8;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
